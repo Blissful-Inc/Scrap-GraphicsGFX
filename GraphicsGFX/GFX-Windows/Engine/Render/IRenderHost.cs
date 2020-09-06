@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GFXWrapper
+namespace GFXWrapper.Engine.Render
 {
-    internal class EntryPoint
+    public interface IRenderHost : IDisposable
     {
-        [STAThread]
-        public static void Main() => new Client.Program().Run();
+        IntPtr HostHandle { get; }
     }
 }
