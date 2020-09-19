@@ -1,9 +1,20 @@
-﻿using System;
+﻿using GFXWrapper.Engine.Render;
+using GFXWrapper.U;
+using System;
+using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace GFXWrapper.Client
 {
     internal class Program : System.Windows.Application, IDisposable
     {
+
+        #region // storage
+
+        private IReadOnlyList<IRenderHost> RenderHosts { get; set; }
+
+        #endregion
+
         #region // ctor
 
         public Program()
@@ -21,6 +32,9 @@ namespace GFXWrapper.Client
         public void Dispose()
         {
 
+            RenderHosts.ForEach(host => host.Dispose());
+            RenderHosts = default;
+           
         }
 
 

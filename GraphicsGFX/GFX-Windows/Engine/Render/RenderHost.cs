@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GFXWrapper.Engine.Render
 {
-    public class RenderHost : IRenderHost
+    public abstract class RenderHost : IRenderHost
     {
 
         #region // storage
@@ -17,7 +17,7 @@ namespace GFXWrapper.Engine.Render
 
         #region // ctor
 
-        public RenderHost(IntPtr hostHandle)
+        protected RenderHost(IntPtr hostHandle)
         {
             HostHandle = hostHandle;
 

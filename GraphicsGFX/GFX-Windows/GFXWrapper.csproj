@@ -39,6 +39,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -54,6 +55,12 @@
     <Compile Include="Engine\Render\RenderHost.cs" />
     <Compile Include="EntryPoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="U\U.cs" />
+    <Compile Include="Win\POINT.cs" />
+    <Compile Include="Win\RECT.cs" />
+    <Compile Include="Win\User32.cs" />
+    <Compile Include="Win\W.cs" />
+    <Compile Include="Win\WindowInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

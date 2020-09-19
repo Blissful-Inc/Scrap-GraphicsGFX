@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using GFXWrapper.Engine.Render;
-
+using GFXWrapper.U;
+using RCi.Tutorials.Gfx.Win;
 
 namespace GFXWrapper.Client
 {
@@ -15,12 +17,15 @@ namespace GFXWrapper.Client
             var size = new System.Drawing.Size(720, 480);
 
 
-            var renderHost = new[]
+            var renderHosts = new[]
             {
-                CreateWindowForm(size, "Forms Gdi", h => new RenderHost(h))
+                CreateWindowForm(size, "Forms Gdi", h => new RenderHost(h)),
+                CreateWindowWpf(size, "Wpf Gdi", h => new RenderHost(h)),
             };
 
-            return renderHost;
+            SortWindows(renderHosts);
+
+            return renderHosts;
         }
 
         private static IRenderHost CreateWindowForm(System.Drawing.Size size, string title, Func<IntPtr, IRenderHost> ctorRenderHost)
@@ -53,37 +58,68 @@ namespace GFXWrapper.Client
             return ctorRenderHost(hostControl.Handle);
 
         }
+
+        private static IRenderHost CreateWindowWpf(System.Drawing.Size size, string title, Func<IntPtr, IRenderHost> ctorRenderHost)
+        {
+            var window = new System.Windows.Window
+            {
+                Width = size.Width,
+                Height = size.Height,
+                Title = title,
+            };
+
+            var hostControl = new System.Windows.Controls.Grid
+            {
+                Background = System.Windows.Media.Brushes.Transparent,
+                Focusable = true,
+            };
+
+            window.Content = hostControl;
+
+
+            hostControl.MouseEnter += (sender, args) =>
+            {
+                if (!window.IsActive) window.Activate();
+                if (!hostControl.IsFocused) hostControl.Focus();
+            };
+
+            window.Closed += (sender, args) => System.Windows.Application.Current.Shutdown();
+            window.Show();
+            return ctorRenderHost(hostControl.Handle());
+
+        }
+
+        private static void SortWindows(IEnumerable<IRenderHost> renderHosts)
+        {
+            var windowInfos = renderHosts.Select(renderHost => new WindowInfo(renderHost.HostHandle).GetRoot()).ToArray();
+
+            var maxSize = new System.Drawing.Size(windowInfos.Max(a => a.RectangleWindow.Width), windowInfos.Max(a => a.RectangleWindow.Height));
+            var maxColumns = (int) Math.Ceiling(Math.Sqrt(windowInfos.Length));
+            var maxRows = (int)Math.Ceiling((double)windowInfos.Length / maxColumns);
+            var primaryScreen = System.Windows.Forms.Screen.PrimaryScreen;
+            var left = primaryScreen.WorkingArea.Width / 2 - maxColumns * maxSize.Width / 2;
+            var top = primaryScreen.WorkingArea.Height / 2 - maxRows * maxSize.Height / 2;
+
+            for (var row = 0; row < maxRows; row++)
+            {
+                for (var column = 0; column < maxColumns; column++)
+                {
+                    var i = row * maxColumns + column;
+
+                    if (i >= windowInfos.Length) return;
+
+                    var x = column * maxSize.Width + left;
+                    var y = row * maxSize.Height + top;
+
+                    var windowInfo = windowInfos[i];
+                    User32.MoveWindow(windowInfo.Handle, x, y, windowInfo.RectangleWindow.Width, windowInfo.RectangleWindow.Height, false);
+                }
+            }
+
+        }
+
     }
 
-    private static IRenderHost CreateWindowWpf(System.Drawing.Size size, string title, Func<IntPtr, IRenderHost> ctorRenderHost)
-    {
-        var window = System.Windows.Window
-        {
-            Width = size.Width,
-            Height = size.Height, 
-            Title = title,
-        };
 
-        var hostControl = System.Windows.Controls.Grid
-        {
-            Background = System.Windows.Media.Brushes.Transparent,
-            Focusable = true,
-        };
-
-        window.Content = hostControl;
-
-
-        hostControl.MouseEnter += (sender, args) =>
-        {
-            if (!window.IsActive) window.Activate();
-            if (!hostControl.IsFocused) hostControl.Focus();
-        };
-
-        window.Closed += (sender, args) => System.Windows.Application.Current.Shutdown();
-        window.Show();
-        return ctorRenderHost(hostControl.handle)
-
-
-    }
 
 }
