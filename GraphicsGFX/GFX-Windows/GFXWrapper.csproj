@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="Client\Program.cs" />
     <Compile Include="Client\WindowFactory.cs" />
+    <Compile Include="Drivers\Gdi\Render\RenderHost.cs" />
     <Compile Include="Engine\Render\IRenderHost.cs" />
     <Compile Include="Engine\Render\RenderHost.cs" />
     <Compile Include="EntryPoint.cs" />
@@ -65,9 +66,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Drivers\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="OVERVIEW.txt" />
   </ItemGroup>

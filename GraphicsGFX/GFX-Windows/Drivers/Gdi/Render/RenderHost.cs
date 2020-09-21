@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace GFXWrapper.Drivers.Gdi.Render
 {
-    class RenderHost
+    public class RenderHost : Engine.Render.RenderHost
     {
+        public RenderHost(IntPtr hostHandle) : base(hostHandle)
+        {
+        }
     }
 }

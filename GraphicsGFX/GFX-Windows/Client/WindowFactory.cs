@@ -19,8 +19,8 @@ namespace GFXWrapper.Client
 
             var renderHosts = new[]
             {
-                CreateWindowForm(size, "Forms Gdi", h => new RenderHost(h)),
-                CreateWindowWpf(size, "Wpf Gdi", h => new RenderHost(h)),
+                CreateWindowForm(size, "Forms Gdi", h => new Drivers.Gdi.Render.RenderHost(h)),
+                CreateWindowWpf(size, "Wpf Gdi", h => new Drivers.Gdi.Render.RenderHost(h)),
             };
 
             SortWindows(renderHosts);
