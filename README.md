@@ -1,2 +1,2 @@
-# Clone-GraphicsGFX
+# Scrap-GraphicsGFX
  clone of graphics project
