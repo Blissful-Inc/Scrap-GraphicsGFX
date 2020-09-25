@@ -29,6 +29,21 @@ namespace GFXWrapper.Engine.Render
         }
 
 
+        #region
+
+        public void Render()
+        {
+
+
+
+
+        }
+
+        #endregion
+
+
+
+
 
         #endregion
 

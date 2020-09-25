@@ -9,5 +9,8 @@ namespace GFXWrapper.Engine.Render
     public interface IRenderHost : IDisposable
     {
         IntPtr HostHandle { get; }
+
+
+        void Render();
     }
 }

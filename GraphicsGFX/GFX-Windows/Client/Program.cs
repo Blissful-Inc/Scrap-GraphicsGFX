@@ -25,7 +25,17 @@ namespace GFXWrapper.Client
 
         private void Ctor()
         {
-            var readOnlyList = WindowFactory.SeedWindows(); 
+            var readOnlyList = WindowFactory.SeedWindows();
+
+            // create some render hosts for rendering
+            RenderHosts = WindowFactory.SeedWindows();
+
+            // render loop
+            while (!Dispatcher.HasShutdownStarted)
+            {
+                Render(RenderHosts);
+                System.Windows.Forms.Application.DoEvents();
+            }
 
         }
 
@@ -34,12 +44,23 @@ namespace GFXWrapper.Client
 
             RenderHosts.ForEach(host => host.Dispose());
             RenderHosts = default;
-           
+
         }
 
 
         #endregion
 
+
+        #region // render
+
+        private static void Render(IEnumerable<IRenderHost> renderHosts)
+        {
+            renderHosts.ForEach(rh => rh.Render());
+
+        }
+
+
+        #endregion
 
 
 
