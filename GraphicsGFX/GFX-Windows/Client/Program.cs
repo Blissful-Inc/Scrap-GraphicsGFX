@@ -12,7 +12,7 @@ namespace GFXWrapper.Client
         #region // storage
 
         private IReadOnlyList<IRenderHost> RenderHosts { get; set; }
-
+            
         #endregion
 
         #region // ctor
@@ -56,9 +56,7 @@ namespace GFXWrapper.Client
         private static void Render(IEnumerable<IRenderHost> renderHosts)
         {
             renderHosts.ForEach(rh => rh.Render());
-
         }
-
 
         #endregion
 
